@@ -1,0 +1,170 @@
+/* WISHLIST - _wishlist.scss */
+.my-wishlist {
+  fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0;
+  }
+  .buttons-set {
+    button,
+    .button {
+      width: 100%;
+      margin-left: 0;
+      @media #{$small} {
+        width: auto;
+        margin-left: 10px;
+      }
+    }
+  }
+}
+.wishlist-list { /* For the new markup based on list and not table */
+  border-top: 1px solid $border-color;
+  padding-top: $base-font-size;
+  & > li {
+    @include clearfix();
+    list-style-type: none;
+    padding-bottom: $base-font-size;
+    margin-bottom: $base-font-size;
+    border-bottom: 1px solid $border-color;
+    position: relative;
+    min-height: 150px;
+    .btn-remove {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .product-image {
+      float: left;
+      margin: 0 $base-font-size $base-font-size 0;
+    }
+    h3.product-name {
+      padding-right: 65px;
+      font-size: $base-font-size;
+    }
+    .description {
+      margin-bottom: $base-font-size;
+    }
+    .add-to-cart-alt {
+      float: right;
+      input,
+      button {
+        float: left;
+      }
+      .qty {
+        display: block;
+        float: left;
+        width: 2.5em;
+        margin-bottom: $base-font-size / 2;
+        margin-right: $base-font-size;
+        text-align: center;
+      }
+    }
+    .price-box {
+      float: left;
+    }
+    .truncated {
+      @include clearfix();
+      clear: both;
+      display: none;
+    }
+    .link-edit {
+      display: none; /* The function is to hard to comprehend, so we simply don't want to show it */
+      position: absolute;
+      right: $base-font-size * 1.5;
+      top: $base-font-size / 2;
+    }
+    p {
+      margin: 0;
+    }
+
+  }
+}
+/* Wishlist table styles if you choose not to use the new markup */
+
+#wishlist-table {
+  .product-name {
+    font-size: $base-font-size;
+  }
+  textarea {
+    width: 100%;
+    min-height: $base-font-size * 5;
+  }
+  p {
+    @include clearfix();
+  }
+  .inner {
+    margin-bottom: $base-font-size / 2;
+  }
+  tbody {
+    tr {
+      border-bottom: 1px solid $border-color;
+    }
+    td {
+      padding: $base-font-size * 1.5;
+      vertical-align: top;      
+      &:first-child {
+        width: 113px; /* Default wishlist thumbnail size in Magento */
+      }
+      &:nth-child(2) {
+        min-width: $base-font-size * 15;
+      }
+    }
+    .cart-cell {
+      width: 100%;
+      margin-bottom: $base-font-size / 2;
+      min-width: $base-font-size * 15;
+      a {
+        text-decoration: underline;
+        &:hover,
+        &:active {
+          text-decoration: none;
+        }
+      }
+      .item-options {
+        dl {
+          @include clearfix();
+          dd,
+          dt {
+            float: left;
+            width: auto;
+          }
+          dt {
+            margin-right: $base-font-size / 2;
+            clear: left;
+            &:after {
+              content: ":";
+            }
+          }
+        }
+      }
+      .details {
+        @include clearfix();
+      }
+    }
+  }
+  .price-box {
+    margin-bottom: $base-font-size / 2;
+    font-size: $base-font-size;
+  }
+  .add-to-cart-alt {
+    @include clearfix();
+    margin-bottom: $base-font-size / 2;
+  }
+  .qty {
+    display: block;
+    float: left;
+    width: 2.5em;
+    margin-bottom: $base-font-size / 2;
+    margin-right: $base-font-size;
+  }
+}
+
+/* Wishlist right col */
+/* See also _products-list.scss for the styling of the mini-product-list */
+.block-wishlist {
+  .actions {
+    a {
+      @include button();
+    }
+  }
+}

@@ -1,0 +1,108 @@
+/* REVIEW - _review.scss */
+.box-reviews {
+  .pager {
+    @include clearfix();
+    border-bottom: 1px solid $border-color;
+    margin-bottom: $base-font-size;
+    select {
+      width: auto;
+    }
+    label {
+      float: left;
+      margin-right: $base-font-size / 2;
+    }
+  }
+  dt {
+    font-weight: normal;
+    span {
+      font-style: italic;
+      margin-right: $base-font-size / 2;
+    }
+  }
+  dd {
+    @include panel();
+    position: relative;
+    .date {
+      position: absolute;
+      right: $base-font-size / 2;
+      top: $base-font-size / 4;
+    }
+  }
+  .form-add {
+    fieldset {
+      border: 0;
+      padding: 0;
+      position: relative;
+      h3 {
+        position: absolute;
+        right: 0;
+        font-size: 1em;
+        font-weight: normal;
+        span {
+          font-weight: bold;
+        }
+      }
+      h4 {
+        font-size: 1em;
+      }
+    }
+  }
+  .form-list {
+    margin-left: 0;
+  }
+}
+
+/* Ratings */
+.ratings-table {
+    td,
+    th {
+        padding: $base-font-size / 4;
+        text-align: left;
+    }
+}
+.rating-list {
+  list-style-type: none;
+  margin: $base-font-size 0;
+  li {
+    select,
+    span {
+      display: inline-block;
+      width: auto;
+    }
+    span {
+      min-width: $base-font-size * 10;
+    }
+  }
+}
+.rating-box {
+    float: left;
+    height: 1em;
+    letter-spacing: 0.5em;
+    line-height: 1em;
+    font-family: "polar-icons";
+    position: relative;
+    color: $light-gray;
+    &:before {
+        display: inline-block;
+        content: "\f005 \f005 \f005 \f005 \f005"; /* Five stars */
+    }
+    .rating {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        color: $rating-color;        
+        &:before {
+            content: "\f005 \f005 \f005 \f005 \f005"; /* Five stars */
+        }
+    }
+}
+
+/* Ratings - Add rating form */
+.form-add {
+  textarea {
+    min-height: 15em;
+  }
+}

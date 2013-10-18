@@ -1,0 +1,27 @@
+/* FOOTER - _footer.scss */
+.footer {
+  margin-top: $base-font-size * 2;
+}
+.theme-by {
+  font-size: $base-font-size / 1.5;
+  text-align: right;
+  text-transform: uppercase;
+  a,
+  a:visited {
+    color: $light-gray;
+  }
+}
+
+/* Newsletter */
+.footer .newsletter {
+  position: relative;
+  padding-right: 78px;
+  input {
+    width: 100%;
+  }
+  button {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

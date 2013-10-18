@@ -1,0 +1,197 @@
+/* ACCOUNT - _account.scss */
+
+/* Login */
+.customer-account-login {
+  .col2-set {
+    .buttons-set {
+      text-align: right;
+    }
+  }
+}
+.col-main {
+  .my-account {
+    padding-top: 1em /* Fix padding above title on some pages */
+  }
+}
+
+/* My account */
+.my-account {
+  .page-title {
+    margin: 0 0 0.5em;
+    overflow: auto; /* Clear fix */    
+    &.title-buttons {
+      text-align: right;    
+      h1 {
+        text-align: left;
+      }
+    }
+    h1 {
+      float: left;
+      clear: none;
+      width: 100%;
+    }
+  }
+  .data-table {
+    width: 100%;
+    background-color: transparent;
+    td.last {
+      white-space: nowrap
+    }
+  }
+  .buttons-set {
+    @include clearfix();
+    button {
+      margin-left: 10px;
+    }
+    .back-link {
+      float: left;
+      width: auto;
+      margin: 0;
+      padding: 6px 0;
+      padding: 0;
+    }
+  }
+  ol {
+    list-style-type: none;
+  }
+  .addresses-list {
+    .item {
+      @include panel();
+    }
+  }
+}
+
+/* View as panel */
+.welcome-msg {
+  @include panel();
+}
+
+/* Recent orders and My orders, list */
+.order-list {
+  width: 100%;
+  padding-top: $base-font-size;
+  li {
+    width: 100%;
+    float: left;
+    margin-bottom: $base-font-size;
+    position: relative;    
+    padding-top: $base-font-size * 1.5;
+    border-bottom: 1px solid $border-color;
+  }
+  .order-id,
+  .order-date {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0.7;
+  }
+  .order-date {
+    right: 0;
+    left: auto;
+  }
+  .order-total,
+  .order-to {
+    font-size: $base-font-size * 1.5;
+    float: left;
+  }
+  .order-total {
+    float: right;
+  }
+  .order-status {
+    float: left;
+    clear: left;
+    font-style: italic;
+  }
+  .order-actions {
+    float: right;
+    clear: right;
+    text-align: right;
+  }
+  .order-status,
+  .order-actions {
+    margin: $base-font-size 0 0;
+  }
+}
+.order-details {
+  h3 {
+    font-size: $h4-font-size;
+  }
+}
+/* View order */
+.my-account .order-info {
+  dt,
+  dd,
+  li {
+    display: inline-block;
+  }
+  li {
+    margin-left: $base-font-size;
+  }
+}
+/* Boxes */
+.box-account {
+  @include clearfix();
+  .box-head {
+    @include clearfix();
+    border-bottom: 1px solid $border-color;
+    h2,
+    h3 {
+      font-size: $h4-font-size;
+      float: left;
+    }
+    h2 {
+      font-weight: bold;
+    }
+  }
+  .box-title {
+    border-bottom: 1px solid $border-color;
+    @include clearfix();
+    h3 {
+      float: left;
+    }
+  }
+  h4 {
+    font-size: $base-font-size;
+  }
+  .box-head,
+  .box-title {
+    a:visited,
+    a {
+      float: right;
+      margin-right: $base-font-size;
+      margin-left: $base-font-size;
+      font-size: 0.8em;
+      line-height: 4em;
+      color: $gray;
+    }
+    a:hover,
+    a:focus,
+    a:active {
+      color: $body-font-color;
+    }
+  }
+  .box-reviews {
+    li.item {
+      border-bottom: 1px solid $border-color;
+      .number {
+        float: left;
+        padding: 0 ($base-font-size / 2);
+        line-height: 1em;        
+      }
+    }
+  }
+}
+
+/* Account navigation */
+.block-account {
+  margin-top: 1em;
+  ul {
+    li {
+      &:last-child {
+        border-bottom: 0;
+      }
+    }
+  }
+}
+
+

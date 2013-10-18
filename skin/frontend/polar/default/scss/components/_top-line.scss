@@ -1,0 +1,114 @@
+/* TOP LINE - _top-line.scss */
+.top-line {
+  line-height: $base-font-size * 2.5;
+  background-color: $primary-color;  
+  a:visited,
+  a {
+    color: $white;
+  }
+  ul {
+    margin-bottom: 0;
+    float: right;
+    line-height: $base-font-size * 2;
+    li {
+      list-style-type: none;
+      display: list-item;
+      @media #{$small} {
+        display: inline-block;
+      }
+      a {
+        padding-left: $base-font-size;
+      }
+    }
+  }
+  .links,
+  #search_mini_form_mobile,
+  #search_mini_form {
+    position: absolute;
+    top: $base-font-size * 2.5;
+    width: 100%;
+    left: 0;
+    padding: $base-font-size 110px 0 $base-font-size;
+    background-color: $almost-white;
+    z-index: 100;
+    button {
+      position: absolute;
+      right: $base-font-size;
+      top: $base-font-size;
+    }
+  }
+  .search-icon {
+    position: absolute;
+    left: 50%;
+    margin-left: -$base-font-size;
+    text-indent: -9999px;
+    overflow: hidden;
+    width: $base-font-size * 2;
+    height: 100%;
+    font-size: $base-font-size * 1.5;
+    line-height: $base-font-size * 2.3;    
+    color: #fff;
+    &:before {
+      text-indent: 0;
+      position: absolute;
+      left: 1px;
+      top: 0;
+      content: "\f002";
+      font-family: "polar-icons";
+    }
+  }
+  .links {
+    margin-top: 0;
+    padding-bottom: $base-font-size;
+    display: none;
+    @media #{$small} {
+      display: block;
+    }
+    li {
+      float: none;
+    }
+  }
+  .menu-icon {
+    position: absolute;
+    left: auto;
+    text-indent: -9999px;
+    overflow: hidden;
+    width: $base-font-size * 3;
+    padding: 0 $base-font-size;
+    height: auto;
+    font-size: $base-font-size * 1.5;
+    line-height: $base-font-size * 2.3;    
+    text-align: center;
+    &:before {
+      text-indent: 0;
+      position: absolute;
+      left: $base-font-size;
+      top: 0;
+      display: inline-block;
+      content: "\f0c9"; /* Menu icon (burger lines) */
+      font-family: "polar-icons";
+    }
+  }
+}
+.top-line .top-line-section {
+  padding: 0;
+  @media #{$small} {
+    padding: 0 $column-gutter / 2;
+  }
+}
+@media #{$small} {
+  .top-line {
+    #search_mini_form {
+      display: none;
+    }
+    .links {
+      position: relative;
+      top: auto;
+      width: auto;
+      left: auto;
+      padding: 0;
+      background-color: transparent;
+      z-index: auto;
+    }
+  }
+}

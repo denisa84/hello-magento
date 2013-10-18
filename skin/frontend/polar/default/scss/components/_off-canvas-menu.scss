@@ -1,0 +1,57 @@
+/* OFF CANVAS CATEGORIES/MENU - _off-canvas-categories.scss */
+.off-canvas-wrapper ul {
+  display: block;
+  margin: 0;  
+  li {
+    list-style-type: none;
+    position: relative;
+    @include clearfix();
+    &.active > a {
+      font-weight: bold;     
+    }
+    &.parent > a:after {
+      content: "\e000";
+      font-family: "polar-icons";
+      vertical-align: middle;
+      float: right;
+      display: block;
+      padding-left: 1em;
+    }
+    &:last-of-type {
+      a {
+        border-bottom: 0;
+      }
+    }
+  }
+  ul {
+    @include clearfix();
+    background-color: rgba(0,0,0,0.05);
+    margin: 0;
+    & a {
+      padding-left: $base-font-size * 1.5;
+      border-bottom: 0;
+    }
+    & ul a {
+      padding-left: $base-font-size * 2;
+    }
+    & ul ul a {
+      padding-left: $base-font-size * 2.5;
+    }    
+    & ul ul ul a {
+      padding-left: $base-font-size * 3;
+    }        
+  }
+  a {
+    display: block;
+    line-height: $base-font-size * 2;
+    padding: ($base-font-size / 2) $base-font-size;
+    border-bottom: 1px solid $border-color;
+    color: $body-font-color;
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: none;
+      background-color: $almost-white;
+    }
+  }
+}

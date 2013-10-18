@@ -1,0 +1,88 @@
+/* BASE - _base.scss */
+
+/* Body and HTML */
+
+body {
+  font-size: $base-font-size;
+}
+/* Page */
+.page {
+  background-color: $background-color;
+}
+/* No list style, but keep the vertical alignment */
+ul, ol {
+  margin-left: 0;
+}
+#crosssell-products-list li,
+.add-to-links li,
+.checkout-types li,
+.footer ul li,
+ul.form-list li,
+.products-grid li,
+.products-list li,
+.breadcrumbs li,
+.sidebar li {
+  list-style-type: none;
+}
+/* Standard classes */
+.no-display {
+  display: none !important;
+}
+.f-left {
+  float: left;
+}
+img.f-left {
+  margin: 0 $base-font-size $base-font-size 0;
+}
+.f-right {
+  float: right;
+}
+img.f-right {
+  margin: 0 0 $base-font-size $base-font-size;
+}
+.f-fix {
+  @include clearfix();
+}
+.v-middle {
+  vertical-align: middle;
+}
+/* Mobile hide/show */
+.polar-toggle-trigger {
+  cursor: pointer;
+}
+.blind {
+  display: none;  
+}
+address {
+  font-style: normal;
+  line-height: 1.5em;
+}
+.fieldset {
+  @include panel();
+}
+
+/* Remove padding on right and left side. For rows you want to fill out to the edges. */
+@media #{$small} {
+  .large-collapse-edges {
+    .column:first-child,
+    .columns:first-child {
+      padding-left: 0;
+    }
+    .column:last-child,
+    .columns:last-child {
+      padding-right: 0;
+    }
+  }
+}
+
+/* Grid cheat for col-set */
+.col2-set {
+  @include grid-row($behavior:nest);
+  .col-1,
+  .col-2 {
+    @include grid-column(12);
+    @media #{$small} {
+      @include grid-column(6);
+    }
+  }
+}

@@ -1,0 +1,65 @@
+/* HEADER - _header.scss */
+.header-container {
+  padding-left: $column-gutter / 2;
+  padding-right: $column-gutter / 2;
+}
+.header {
+  margin: 0 auto;
+  padding: ($base-font-size / 2) 0 $base-font-size;
+  @media #{$small} {
+    padding: ($base-font-size * 2) 0 $base-font-size;
+  }
+  .logo {
+    display: inline-block;
+    font-size: $h1-font-size;
+    float: left;
+  }
+  #search_mini_form_mobile,
+  #search_mini_form {
+    float: right;
+    margin-bottom: 0;
+  }
+  .form-search {
+    display: none;
+    @media #{$small} {
+      display: block;
+    }
+    float: right;
+    width: auto;
+    input {
+      float: left;
+      width: auto;
+      margin-right: $base-font-size;
+    }
+    button {
+      float: right;
+    }
+  }
+}
+.search-autocomplete {
+  display: block;
+  z-index: 80;
+  background-color: $white;
+  color: $primary-color;
+  @include box-shadow(0 0 10px rgba(0,0,0,0.5));
+  ul {
+    margin: 0;
+  }
+  li {
+    list-style-type: none;
+    padding: ($base-font-size / 2) $base-font-size;
+    &:hover,
+    &:active,
+    &:focus {
+      cursor: pointer;
+    }
+    & > span {
+      float: right;
+      display: inline-block;
+      opacity: 0.8;
+    }
+  }
+  .selected {
+    background-color: rgba(0,0,0,0.1);
+  }
+}

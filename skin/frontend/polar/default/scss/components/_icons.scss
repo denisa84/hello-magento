@@ -1,0 +1,347 @@
+/* ICONS - _icons.scss. Universal icon and dropdown areas. */
+
+/* Delete-/remove-icons */
+.close-btn,
+.block-cart .close-btn,
+.cart-list .link-wishlist,
+.btn-remove2,
+.btn-remove {
+  text-indent: -9999px;
+  display: inline-block;
+  position: relative;
+  width: 1.5em;
+  line-height: 1em;
+  &:before {
+    content: "\e001"; /* Trash can */
+    font-family: "polar-icons";
+    position: absolute;
+    text-indent: 0;
+    left: 0;
+    top: 0;
+    display: inline-block;
+    color: $alert-color;
+    font-size: $base-font-size * 1.5;
+  }
+  &:hover:before,
+  &:active:before,
+  &:focus:before {
+    color: darken($alert-color, 10%);
+  }
+}
+
+/* Top cart */
+.off-canvas-wrapper,
+.block-cart {
+  .close-btn {
+    cursor: pointer;
+    &:before {
+      color: $gray;
+      content: "\f00d"; /* Delete, close, remove, X */
+    }
+    &:hover:before,
+    &:active:before,
+    &:focus:before {
+      color: $primary-color;
+    }
+  }
+}
+.off-canvas-wrapper .close-btn:before {
+  padding: 0 $base-font-size / 2;
+  top: 0.5em;
+  left: 0;
+  width: 1em;
+  display: inline-block;
+  color: $body-font-color;
+  font-size: $base-font-size * 1.5;  
+}
+
+/* Category icon */
+.options-icon,
+.filter-icon,
+.category-icon {
+  background-color: $primary-color;
+  color: $white;
+  cursor: pointer;
+  line-height: 1.5em;
+  padding: ($base-font-size / 2) $base-font-size;
+  margin: 0 ($column-gutter / 2) $base-font-size;
+  position: relative;
+  &.expanded:after,
+  &.collapsed:after {
+    content: "\f078"; /* Arrow down */
+    text-indent: 0;
+    position: absolute;
+    right: $base-font-size;
+    top: $base-font-size / 2;
+    font-size: $base-font-size * 1.5;  
+    color: $white;  
+    font-family: "polar-icons";
+  }
+  &.expanded:after {
+    content: "\f077"; /* Arrow up */
+  }
+}
+.filter-icon {
+  margin: 0 0 $base-font-size;
+}
+.options-icon {
+  margin: 0;
+}
+
+/* Cart link */
+.cart-link {
+  &:after {
+    content: "\f07a"; /* Cart */
+    text-indent: 0;
+    font-size: $base-font-size * 1.5;  
+    margin-left: $base-font-size / 2;
+    font-family: "polar-icons";
+  }
+  @media #{$small} {
+    &:before {
+      content: "\f07a"; /* Cart */
+      text-indent: 0;
+      margin-right: $base-font-size / 2;
+      font-family: "polar-icons";
+    }
+    &:after {
+      display: none;
+    }
+  }
+}
+.messages li {
+  &.success-msg,
+  &.error-msg,
+  &.notice-msg {
+    li {
+      &:before {
+        content: "\f071"; /* Alert */
+        font-family: "polar-icons";
+        font-size: $base-font-size * 1.5;
+        line-height: 1em;
+        vertical-align: middle;
+        float: left;
+        margin-right: $base-font-size;
+        display: block;
+      }
+    }
+  }
+  &.success-msg li:before {
+    content: "\f00c"; /* Checkmark */
+  }
+  &.notice-msg li:before {
+    content: "\f05a"; /* Info */
+  }
+}
+/* Cart */
+.checkout-cart-index .page-title h1:before {
+  content: "\f07a"; /* Cart */
+  font-family: "polar-icons";
+  display: inline-block;
+  margin-right: 0.5em;
+}
+.cart-list .link-wishlist {
+  line-height: 1em;
+  &:before {
+    content: "\f044"; /* Write to square */
+    color: $body-font-color;
+  }
+  &:hover:before,
+  &:active:before,
+  &:focus:before {
+    color: lighten($body-font-color, 10%);
+  }  
+}
+
+/* Button icons */
+.btn-cart {
+  span span {
+    &:before {
+      position: relative;
+      content: "\f07a"; /* Cart */
+      font-family: "polar-icons";
+      margin-right: $base-font-size / 2;
+    }
+  }
+}
+/* View order */
+.my-account .order-info {
+  li.current {
+    &:before {
+      content: "\e000 "; /* Arrow right */
+      font-family: "polar-icons";
+      color: $secondary-color;
+      padding-right: $base-font-size / 2;
+    }
+  }
+}
+
+
+/* Wishlist */
+.header a[href*="wishlist"],
+.top-line a[href*="wishlist"],
+.link-wishlist {
+  &:hover,
+  &:active,
+  &:focus {
+    &:before {
+     text-decoration: none;
+    }
+  }
+  &:before {
+    position: relative;
+    content: "\f044"; /* Write to square */
+    font-family: "polar-icons";
+    margin-right: $base-font-size / 2;
+  }  
+}
+
+/* Checkout */
+.btn-checkout {
+  &:after {
+    content: "\e000"; /* Arrow right */
+    position: relative;
+    bottom: -($base-font-size / 8);
+    font-size: $base-font-size * 1.5;  
+    margin-left: $base-font-size;
+    line-height: $base-font-size;
+    color: $white;  
+    font-family: "polar-icons";
+  }
+}
+#mini-cart-wrapper .btn-checkout {
+  &:after {
+    font-size: $base-font-size;
+  }
+}
+.opc {
+  li {
+    button {
+      &:after {
+        content: "\e000"; /* Arrow right */
+        font-family: "polar-icons";
+        margin-left: $base-font-size;
+      }
+    }
+  }
+}
+
+/* Back link */
+.back-link a {
+  small {
+    display: none;
+  }
+  &:before {
+    content: "\f053"; /* Arrow left */
+    display: inline-block;
+    font-family: "polar-icons";
+    margin-right: $base-font-size / 2;
+  }
+}
+
+/* Full width dropdown */
+.options-icon,
+.filter-icon,
+.category-icon {
+  background-color: $primary-color;
+  color: $white;
+  cursor: pointer;
+  line-height: 1.5em;
+  padding: ($base-font-size / 2) $base-font-size;
+  margin: 0 ($column-gutter / 2) $base-font-size;
+  position: relative;
+  &.expanded:after,
+  &.collapsed:after {
+    content: "\f078"; /* Arrow down */
+    text-indent: 0;
+    position: absolute;
+    right: $base-font-size;
+    top: $base-font-size / 2;
+    font-size: $base-font-size * 1.5;  
+    color: $white;  
+    font-family: "polar-icons";
+  }
+  &.expanded:after {
+    content: "\f077"; /* Arrow up */
+  }
+}
+.filter-icon {
+  margin: 0 0 $base-font-size;
+}
+.options-icon {
+  margin: 0;
+  clear: both;
+}
+
+/* Toolbar */
+.toolbar .sorter .sort-by {
+  a[href*="dir=desc"],
+  a[href*="dir=asc"] {
+    img {
+      display: none;
+    }
+    &:before {
+      content: "\f077"; /* Descending (up arrow) */
+      font-family: "polar-icons";
+      width: 1em;
+    }
+    &:hover,
+    &:active,
+    &:focus {
+      color: $secondary-color;
+      text-decoration: none;
+    }
+  }
+  a[href*="dir=asc"] {
+    &:before {
+      content: "\f078"; /* Ascending (down arrow) */
+    }
+  }
+}
+.next,
+.previous {
+  &:before {
+    content: "\e000"; /* Arrow right */
+    font-family: "polar-icons";
+  }
+  img {
+    display: none;
+  }
+  &:hover,
+  &:active,
+  &:focus {
+    color: $secondary-color;
+    text-decoration: none;
+  }
+}
+.previous:before {
+  content: "\f053"; /* Arrow left */
+}
+/* Search button replacement */
+#search_mini_form_mobile {
+  button {
+    background-color: transparent;
+    text-indent: -9999px;
+    display: inline-block;
+    width: 1em;
+    line-height: 1em;
+    &:before {
+      content: "\f002"; /* Search */
+      font-family: "polar-icons";
+      position: absolute;
+      text-indent: 0;
+      padding: 0 $base-font-size / 2;
+      top: 0.5em;
+      left: 0;
+      width: 1em;
+      display: inline-block;
+      color: $body-font-color;
+      font-size: $base-font-size * 1.5;
+    }
+    &:hover:before,
+    &:active:before,
+    &:focus:before {
+      color: $primary-color;
+    }
+  }
+}

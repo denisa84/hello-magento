@@ -1,0 +1,88 @@
+/* SIDEBAR - _sidebar.scss */
+
+/* Block styles */
+.sidebar {
+  .block-title {
+    font-size: $h5-font-size;
+    line-height: $header-line-height;
+    margin: $header-top-margin 0 $header-bottom-margin 0;
+    position: relative;
+    small {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+}
+
+/* Block title */
+.block-title {
+  padding: 0 0 0.5em;
+  font-weight: normal;    
+  strong {
+    font-weight: normal;
+  }
+}
+
+/* Block recently viewed */
+.block-viewed {
+  .block-content {
+    @include panel();
+  }
+  ol {
+    margin-bottom: 0;
+  }
+  p {
+    margin-bottom: 0;
+  }
+  li {
+    list-style-type: disc;
+    margin-left: $base-font-size;
+  }
+}
+
+/* Block compare */
+.block-compare {
+  li.item {
+    padding-right: $base-font-size * 1.5;
+    position: relative;
+
+    .btn-remove {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+  .actions {
+    @include clearfix();
+    text-align: right;
+    button {
+      float: left;
+    }
+  }
+}
+/* My orders (left menu) */
+
+.block-reorder {
+  li.item {
+    position: relative;
+    @include clearfix();
+    margin-bottom: 0;
+    padding-left: $base-font-size * 1.5;
+    p {
+      margin-bottom: 0;
+    }
+    input {
+      position: absolute;
+      left: 0;
+      top: $base-font-size / 4;
+    }
+  }
+  .actions {
+    @include clearfix();
+    text-align: right;
+    button {
+      float: left;
+    }
+  }
+}

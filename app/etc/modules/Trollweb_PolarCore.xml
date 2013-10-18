@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Trollweb_PolarCore>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Trollweb_PolarCore>
+    </modules>
+</config>

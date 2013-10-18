@@ -1,0 +1,34 @@
+// To ease the creation of child themes, all default components are collected here for one easy @import url(
+@import "components/base",
+        "components/typography",
+        "components/message",
+        "components/table",
+        "components/structural",
+        "components/off-canvas",
+        "components/off-canvas-search",
+        "components/off-canvas-menu",
+        "components/sidebar",
+        "components/top-line",
+        "components/top-cart",
+        "components/header",
+        "components/footer",
+        "components/navigation",
+        "components/navigation-vertical",
+        "components/std",
+        "components/form",
+        "components/icons",
+        "components/breadcrumbs",
+        "components/products-list",
+        "components/price",
+        "components/product",
+        "components/product-tabs",
+        "components/tag",
+        "components/review",
+        "components/cart",
+        "components/checkout",
+        "components/wishlist",
+        "components/account";
+
+// We have several third party plugins we use regularly, and here's the custom styling for the most common ones
+// @import "components/thirdparty/lightcheckout"; // Gomage Light Checkout
+// @import "components/thirdparty/checkitout"; // CheckItOut!

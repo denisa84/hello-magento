@@ -1,0 +1,69 @@
+/* TOP CART - _top-cart.scss */ 
+
+/* In top line and below $small (mobile) */
+.top-cart {
+  float: right;
+  a,
+  a:hover,
+  a:active,
+  a:focus,
+  a:visited {
+   text-decoration: none;
+  }
+  .cart-link {
+    display: block;
+    font-size: $base-font-size * 1.5;
+    padding-right: $column-gutter / 2;
+  }
+}
+
+/* In main header and above $small */
+.header {
+  .block-cart {
+    position: relative;
+    margin-left: $base-font-size;
+    float: right;
+    .cart-link {
+      @include button($bg: $success-color);
+      @include border-radius($global-radius);
+    }
+  }
+}
+
+/* Cart dropdown - only for larger than $small */
+#mini-cart-wrapper {
+  position: absolute;
+  right: 0;
+  background-color: $white;
+  border: 1px solid $border-color;
+  padding: $base-font-size;
+  z-index: 10;
+  width: $base-font-size * 20;
+  text-align: left;
+  @include border-radius($global-radius);
+  @media #{$small} { 
+    width: $base-font-size * 30;
+  }
+  @include box-shadow(0 0 100px $black);
+  ol {
+    list-style-type: none;
+  }
+  .actions {
+    @include clearfix();
+    .button {
+      float: left;
+      margin-bottom: 0;
+    }
+    .btn-cart {
+      float: right;
+    }
+  }
+  .close-btn {
+    position: absolute;
+    right: $base-font-size;
+    top: $base-font-size;
+  }
+  .btn-edit {
+    display: none;
+  }
+}

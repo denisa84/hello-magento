@@ -1,0 +1,31 @@
+/* ADMIN CREATED CONTENT - STD - _std.scss */
+ul.disc {
+  margin-left: $base-font-size * 1.5;
+}
+.box-collateral,
+.std {
+  ol,
+  ul {
+    margin-left: -$base-font-size * 1.5;
+    @media #{$small} {
+      margin-left: $base-font-size * 1.5;
+    }
+  }
+  ol.products-list,
+  ul.form-list,
+  ul.rating-list {
+    margin-left: 0;
+  }
+  ul.products-grid {
+    margin-left: $column-gutter / 2;
+  }
+  p {
+    /* A float fix to allow floating images beside multiple paragraphs */
+    &:after,
+    &:before {
+      display: inline;
+      clear: none;
+      content: none;
+    }
+  }
+}

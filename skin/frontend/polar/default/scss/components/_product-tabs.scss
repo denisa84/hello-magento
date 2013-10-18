@@ -1,0 +1,28 @@
+/* PRODUCT TABS - _product-tabs.scss */
+.product-tabs {
+  .std {
+    line-height: $base-line-height;
+  }
+  &.section-container.auto {
+    & > section {
+      & > .title {
+        font-weight: $section-title-weight;
+        font-size: $section-title-size;
+        margin: 0;
+        a:hover,
+        a:active,
+        a:focus {
+          text-decoration: none;
+        }
+      }
+    }
+    & > section.active {
+      & > .title {
+        a:visited,
+        a {
+          color: $section-title-active-color;
+        }
+      }
+    }
+  }
+}

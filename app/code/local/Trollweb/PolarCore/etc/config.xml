@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Trollweb_PolarCore>
+            <version>0.0.1</version>
+        </Trollweb_PolarCore>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <polarcore module="Trollweb_PolarCore">
+                    <file>polarcore.xml</file>
+                </polarcore>
+            </updates>
+        </layout>
+    </frontend>
+  <!-- There doesn't seem to be any other way to add a new template file to the settings? -->
+	<global>
+	    <page>
+	        <layouts>
+			    <page_one_column_checkout module="page" translate="label">
+			        <label>1 column - Checkout</label>
+			        <template>page/1column-checkout.phtml</template>
+			         <layout_handle>page_one_column_checkout</layout_handle>
+			    </page_one_column_checkout>
+	        </layouts>
+	    </page>
+	</global>
+</config>

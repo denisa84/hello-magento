@@ -1,0 +1,26 @@
+/* PRICE - _price.scss */
+/* General styling of price */
+.price-box {
+  margin-bottom: $base-font-size;
+  font-size: $price-size;
+  color: $price-color;
+  font-weight: 700;
+  p {
+    margin: 0;
+  }
+  .old-price {
+    text-decoration: line-through;
+    font-size: emCalc(12px);
+    color: lighten($price-color, 20);
+  }
+  .price {
+    font-weight: bold;
+  }
+  .price-including-tax,
+  .price-excluding-tax {
+    display: block;
+  }
+  .price-including-tax {
+    font-size: 0.8em;
+  }
+}

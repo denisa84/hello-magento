@@ -1,0 +1,46 @@
+/* NAVIGATION VERTICAL - _navigation-vertical.scss - Categories (left or right menu) */
+.vertnav-container {
+  li {
+    & > ul {
+      display: none;
+    }
+    &.active > ul {
+      display: block;
+    }
+    &.parent {
+      position: relative;
+      padding-left: 0.1em;
+      & > ul {
+        border-left: 1px solid $secondary-color;
+      }
+      & > a {
+        padding-left: 1em;
+      }
+      &:before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        content: "\f067"; /* Plus sign */
+        font-family: "polar-icons";
+        color: $primary-color;
+      }
+    }
+    &.parent.active {
+      &:before {
+        content: "\f068"; /* Minus sign */
+      }
+    }
+  }
+  li.active > a {
+    font-weight: bold;
+  }
+  li a {
+    line-height: $base-font-size * 1.5;
+    display: block;
+  }
+  li.active  ul {
+    padding-left: $base-font-size / 2;
+    margin-left: $base-font-size / 4;
+    border-left: 1px solid $primary-color;
+  }
+}

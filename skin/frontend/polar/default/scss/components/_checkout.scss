@@ -1,0 +1,226 @@
+/* Checkout */
+
+.one-column-checkout {
+  max-width: $small-screen;
+  .header-container {
+    margin-top: 0;
+    .header {
+      margin: 0;
+      padding: 0;
+      .logo {
+        margin: 0;
+      }
+    }
+  }
+}
+/* Horizontal mode, standard */
+.opc {
+  list-style-type: none;
+  & > li {
+    .step-title {
+      background-color: $light-gray;
+      color: $white;
+      padding: 0 $base-font-size / 2;
+      cursor: pointer;
+      h2 {
+        position: relative;
+        font-weight: normal;
+        font-size: $base-font-size * 1.5;  
+        line-height: 1.5em;
+        .number {
+          position: absolute;
+          right: 0;
+          color: $white;
+        }
+        a:hover,
+        a:active,
+        a:focus,
+        a:visited,
+        a {
+          text-decoration: none;
+          color: $white;
+        }
+      }
+    }
+    .step {
+      background-color: $almost-white;
+      padding: $base-font-size;      
+    } 
+    &.allow {
+      .step-title {
+        background-color: $success-color;
+      }
+    }   
+  }
+  fieldset {
+    border: 0;
+    padding: 0;
+  }
+  ul.form-list {
+    &,
+    & ul {
+      margin-left: 0;
+    }
+  }
+  .buttons-set {
+    margin: 1em 0;
+  }
+}
+/* Vertical mode, experimental
+.opc {
+  position: relative;
+  li {
+    list-style-type: none;
+  }
+  & > li {
+    @include clearfix();
+    background: $light-gray;
+    overflow: visible;
+    width: 100%;
+    margin-bottom: $base-font-size / 2;
+    @media #{$small} {
+      width: auto;
+      margin-bottom: 0;
+    }
+    float: left;
+    margin-right: $base-font-size;       
+    &:not(.active) {
+        display: inline-block;
+    }
+    &.active {
+      .step-title {
+        @include clearfix();
+        background: $almost-white;
+        cursor: default;
+        h2 {
+          a {
+            color: $body-font-color;  
+          }
+        }
+      }
+    }
+    &.allow:not(.active) {
+      .step-title {
+        background-color: $success-color;
+        color: $white;
+        cursor: pointer;
+        &:hover {
+          background: #cecece;
+        }
+      }
+    }
+    label {
+      line-height: 1em;
+    }    
+    .step-title {
+      width: 100%;
+      @media #{$small} {
+        width: auto;
+      }
+      display: inline-block;
+      float: left;
+      h2 {
+        float: left;
+        color: $white;
+        margin: 0;
+        font-weight: normal;
+        font-size: $base-font-size;
+      }
+      a {
+        padding: 0 ($base-font-size);
+        line-height: $base-font-size * 2.5;
+        float: right;
+        display: block;
+        color: $white;
+        text-decoration: none;  
+        display: inline-block;        
+        &:hover {
+          text-decoration: none;
+        }
+      }
+     .number {
+        float: left;
+        margin-right: $base-font-size / 2;
+      }
+    }
+    .step {
+      @include clearfix();
+      @media #{$small} {
+        position: absolute;
+        left: 0;
+      }
+      top: $base-font-size * 2.5;
+      width: 100%;
+      @include panel($bg: $almost-white);
+      form {
+        margin-bottom: 0;
+      }
+      fieldset {
+        border: 0;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+  .buttons-set {
+    width: auto;
+    min-height: 32px;
+    float: right;
+    button,
+    .please-wait {
+      float: right;
+      margin-left: 10px;
+      margin-bottom: 0;
+    }
+    p.required {
+      @include clearfix();
+    }
+    .back-link {
+      display: none;
+      float: left;
+      margin-top: 8px;
+      line-height: 1em;
+    }
+    &.disabled {
+      p.f-left,
+      .back-link,
+      button {
+        display: none;
+      }
+    }
+  }
+  .data-table {
+    width: 100%;
+  }
+  #review-please-wait {
+    display: block;
+    float: right;
+    clear: both;
+    line-height: $base-font-size * 3;    
+  }
+  #checkout-review-submit p.f-left {
+    width: auto;
+    margin-top: $base-font-size;
+  }
+  ul {
+    margin-left: 0;
+  }
+  select {
+    max-width: $base-font-size * 15;
+  }
+} */
+
+/* Multiple address checkout */
+.checkout-progress {
+  list-style: none;
+  @include panel();
+  margin: 0;
+  li {
+    display: inline-block;
+    padding: 8px;
+    &.active {
+      background-color: $gray;
+      color: $white;
+    }
+  }
+}

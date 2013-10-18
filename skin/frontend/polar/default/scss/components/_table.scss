@@ -1,0 +1,16 @@
+/* TABLE - _table.scss */
+.data-table {
+  colgroup {
+    width: 100%;
+  }
+  tbody {
+    th {
+      text-align: left;
+      background-color: $almost-white;
+      border: 1px solid $white;
+    }
+  }
+  ul {
+    margin-left: $base-font-size * 1.5;
+  }
+}

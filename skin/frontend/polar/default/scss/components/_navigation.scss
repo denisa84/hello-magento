@@ -1,0 +1,108 @@
+/* NAVIGATION - _navigation.scss - Categories (main menu) */
+.nav-container {
+  padding-left: $column-gutter / 2;
+  padding-right: $column-gutter / 2;
+  #nav {
+    display: none; /* Mobile first, so this must be hidden as default */
+    @media #{$small} {
+      display: block; /* For larger than mobile */
+    }
+    margin-bottom: $base-font-size;
+    background-color: $primary-color;
+    padding: 0;
+    @include border-radius($global-radius);
+    li {
+      display: inline-block;
+      list-style-type: none;
+      position: relative;
+      a {
+        padding: ($base-font-size / 2);
+        line-height: $base-font-size * 1.5;
+        color: $white;
+        &:hover,
+        &:focus,
+        &:active {
+          text-decoration: none;
+          background-color: darken($primary-color, 10%);
+        }        
+      }
+      & > a {
+          display: block;
+          padding: ($base-font-size / 2) ($base-font-size * 1.5);
+      }
+      &.active > a {
+        font-weight: bold;
+      }
+      &.over > a {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+    /* Level 2 */
+    ul {
+      position: absolute;
+      left: -9999px;
+      margin-left: 0;
+      text-align: left;
+      li {
+        position: relative;
+        display: list-item;
+        &.parent > a:after {
+          content: "\e000";
+          font-family: "polar-icons";
+          position: absolute;
+          vertical-align: middle;
+          right: $base-font-size;
+          display: inline-block;
+          padding-left: 1em;
+          color: $white;
+        }
+      }
+      li > a {
+        white-space: nowrap;
+        display: block;
+        background-color: $primary-color;
+        color: $white;
+        padding-right: $base-font-size * 3;
+        &.over > a,
+        &:hover,
+        &:focus {
+          background-color: darken($primary-color, 10%);
+        }
+      }        
+      /* Level 3+ */
+      ul {
+        top: 0;
+        margin-top: 0;
+        margin-left: 100%;
+      }
+    }
+    ul.shown-sub,
+    div.shown-sub {
+      z-index: 999;
+      left: 0;
+    }
+  }
+}
+
+/* Layered navigation */
+.block-layered-nav  {
+  .btn-remove:before {
+    font-size: 0.8em;
+  }
+  .currently ol {
+    @include panel();
+    margin-bottom: 0;
+    .label {
+      font-weight: bold;
+    }
+  }
+  .actions {
+    text-align: right;
+    padding-top: $base-font-size / 2;
+    margin-bottom: $base-font-size;
+  }
+  .block-subtitle {
+    display: none;
+  }
+}
+

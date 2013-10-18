@@ -1,0 +1,162 @@
+@import "message-to-css-people";
+
+// Normalizes how elements are rendered by default across browsers. Basically a reset stylesheet with styles.
+@import "../foundation/scss/normalize";
+
+// Add this to your themes _settings.scss to include the entire compass library.
+// By not including all of Compass you increase your compilation speed.
+// @import "compass";
+
+// Only import what's needed from compass
+@import "compass/css3/border-radius";
+@import "compass/css3/box-shadow";
+@import "compass/css3/text-shadow";
+@import "compass/css3/opacity";
+@import "compass/css3/transition";
+@import "compass/css3/transform";
+@import "compass/css3/images"; // Gradients etc.
+
+// Media queries
+$tiny-screen: 479px; 
+$small-screen: 639px;
+$medium-screen: 1023px; // Applies to iPad landscape with 1024px for instance
+$large-screen: 1279px;
+
+$tiny: "only screen and (min-width:"#{$tiny-screen}")";
+
+// Import standard Foundation variables
+@import "../foundation/scss/foundation/variables";
+@import "../foundation/scss/foundation/components/global";
+
+// Make sure the charset is set appropriately
+@charset "UTF-8";
+
+// Typography
+$base-font-size: 16px;
+$h2-font-size: emCalc(18px);
+$base-line-height: 1.5em;
+
+// Default colors
+$primary-color: #2BA6CB; // Blue
+$secondary-color: #d222c3; // Pink
+$alert-color: #f05c5c; // Red
+$success-color: #1a9f5d; // Green
+
+$white: #fff;
+$black: #000;
+$gray: #666;
+$light-gray: lighten($gray, 20%);
+$lighter-gray: lighten($gray, 30%);
+$almost-white: lighten($gray, 55%);
+
+$background-color: $white;
+
+$border-color: darken($almost-white, 10%);
+$rating-color: #f2cd00; // Yellow/gold
+
+$price-size: $base-font-size * 1.2;
+$price-color: $body-font-color;
+$price-color-old: lighten($price-color, 30%);
+$buy-color: $success-color;
+
+// Radius
+$global-radius: 0;
+
+// Grid
+$row-width: 1140px;
+$column-gutter: $base-font-size * 1.5;
+
+// Off canvas
+$canvas-width-small: 85% !default;
+$canvas-width-large: 20em !default;
+
+
+// Tables
+$table-even-row-bg: transparent;
+$table-row-font-size: 1em; // Increase default font size to 1em in tables
+$table-head-font-size: $table-row-font-size;
+
+// Background color for the table and even rows
+$table-bg:               transparent;
+$table-even-row-bg:      transparent;
+
+// Table cell border style
+$table-border-color:     transparent;
+
+// Table head styles
+$table-head-bg:          $almost-white;
+$table-head-font-size:   $base-font-size;
+$table-head-font-color:  $black;
+$table-head-font-weight: normal;
+$table-head-padding:     $base-font-size / 2;
+
+// Row padding and font styles
+$table-row-padding:      $table-head-padding;
+$table-row-font-size:    $table-head-font-size;
+$table-row-font-color:   $black;
+$table-line-height:      $base-font-size * 1.5;
+
+// Display and margin of tables
+$table-margin-bottom:    $base-font-size * 2;
+
+// Background and border styles
+$panel-bg:              $almost-white;
+$panel-border-size:     0;
+
+// Default inner padding and bottom margin
+$panel-margin-bottom:   $base-font-size;
+$panel-padding:         $base-font-size;
+
+// Default font colors
+$panel-font-color:      $body-font-color;
+$panel-font-color-alt:  $white;
+
+// Forms
+$label-font-sizing: 1em;
+$include-html-label-classes: false; // This is not set to default so that the label styles on elements with the .label class is removed
+$input-font-size: 1em;
+
+//
+// Product tabs (Sections)
+//
+
+// Padding and hover factor
+$section-title-padding: $base-font-size;
+$section-content-padding: $base-font-size;
+
+// Titles
+$section-title-color: $body-font-color;
+$section-title-bg: $almost-white;
+$section-title-bg-active-tabs: $white;
+$section-title-weight: 400;
+$section-title-active-color: $body-font-color;
+$section-title-size: $base-font-size;
+
+// Border
+$section-border-color: $border-color;
+
+// Font controls
+$section-font-size: $base-font-size;
+
+// Control the color of the background and some size options
+$section-content-bg: transparent;
+$section-bottom-margin: $base-font-size;
+
+// Labels
+$label-padding: 0;
+$label-radius: $global-radius;
+
+// Let's tone down those huge Foundation buttons
+$button-med: emCalc(10px);
+$button-border-width: 0;
+$button-font-weight: normal;
+
+// Breadcrumbs
+$crumb-bg: transparent;
+$crumb-border-color: $crumb-bg;
+$crumb-padding: 0;
+$crumb-font-size: $base-font-size;
+$crumb-font-transform: none;
+$crumb-slash-color: $black;
+$crumb-slash: "/";
+

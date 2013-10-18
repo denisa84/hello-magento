@@ -1,0 +1,33 @@
+/*
+e000 - Arrow right
+f053 - Arrow left
+f077 - Arrow up
+f078 - Arrow down
+f05a - Info
+f071 - Alert
+f00c - Checkmark
+f00d - Delete (remove, X)
+f0c9 - Three lines (menu)
+f07a - Cart
+f09c - Unlocked
+f023 - Locked
+f0c5 - Compare (duplicate papers)
+f044 - Write to square
+f041 - Map marker
+f002 - Search
+f068 - Minus sign
+f067 - Plus sign
+f004 - Full heart
+f08a - Empty heart
+f006 - Empty star
+f005 - Full star
+e001 - Trash can
+*/
+@font-face {
+  font-family: 'polar-icons';
+  src: url('polar-icons.eot'); /* IE 5-8 */ 
+  src: local('☺'),             /* sneakily trick IE */
+        url('polar-icons.woff') format('woff'),    /* FF 3.6, Chrome 5, IE9 */
+        url('polar-icons.ttf') format('truetype'), /* Opera, Safari */
+        url('polar-icons.svg#font') format('svg'); /* iOS */
+}

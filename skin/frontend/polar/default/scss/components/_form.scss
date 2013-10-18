@@ -1,0 +1,178 @@
+/* FORM - _form.scss */
+button,
+input,
+select,
+textarea {
+  font-size: $base-font-size * 0.8;
+}
+p.required,
+.required em {
+  display: inline-block;
+  float: left;
+  margin-right: 0.5em;
+  color: $alert-color;
+  font-style: normal;
+}
+p.required {
+  clear: both;
+  float: none;
+  display: block;
+  font-size: 0.8em;
+  text-align: right;
+  margin-top: $base-font-size / 4;
+}
+.radio {
+  float: left;
+  margin-right: $base-font-size / 2;
+  line-height: $base-line-height;
+}
+label,
+.label {
+  padding-bottom: $base-font-size / 2;
+}
+input,
+textarea {
+  @include border-radius($global-radius);
+}
+/* Form list, and other form elements */
+.form-list {
+  li {
+    margin-bottom: $base-font-size;
+    clear: both;
+    label {
+      display: block;
+      padding-bottom: $base-font-size / 2;
+    }
+    &.control {
+      div,
+      input {
+        float: left;
+        margin-right: $base-font-size / 2;
+      }
+      input[type="text"] {
+        margin-top:  $base-font-size / 2;
+      }
+      label {
+        width: auto;
+        line-height: 1em;
+      }
+      .input-box {
+        float: left;
+        margin-right: $base-font-size / 2;
+      }
+    }
+    .field {
+      width: 48%;
+      &:last-child {
+        float: right;
+      }
+      &:first-child {
+        float: left;
+      }
+    }
+    input[type=text] {
+      width: 100%
+    }
+    li > div {
+      display: block;
+      margin-bottom: $base-font-size;
+    }
+  }
+  .additional-row {
+    p {
+      float: right;
+      width: 5%;
+      margin-top: $base-font-size * 2;
+      text-align: center;
+      a {
+        float: right;
+      }
+    }
+    .field:last-child {
+      width: 43%;
+    }
+  }
+}
+.buttons-set {
+  text-align: right;
+  .back-link {
+    float: left;
+    text-align: left;
+  }
+}
+
+/* Tame those huge Foundation buttons */
+.button,
+button {
+  @include box-shadow(none);
+  @include border-radius($global-radius);
+  white-space: nowrap;
+  &:hover,
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+  &.btn-cart {
+    @include button-style($bg:$buy-color);
+  }
+}
+
+h2.legend {
+  clear: both;
+}
+.fieldset {
+  float: left;
+  clear: both;
+  width: 100%;
+  margin-bottom: $base-font-size;
+  padding: $base-font-size;
+  border: 1px solid $border-color;
+}
+
+    .fieldset h2 {
+      margin-top: 0;
+      margin-bottom: $base-font-size / 2;
+      padding: 0 0 $base-font-size / 2;
+      border-bottom: 1px solid $border-color;
+    }
+
+    .fieldset .legend {
+      font-size: $base-font-size
+    }
+
+/* Validation bubble */
+.validation-advice {
+  background-color: $alert-color;
+  color: $white;
+  line-height: 1em;
+  padding: $base-font-size / 2;
+  font-size: 0.8em;
+  width: auto;
+  position: relative;
+  &:after,
+  &:before {
+    bottom: 100%;
+    border: solid transparent;
+    border-bottom-color: $alert-color;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;    
+    left: 10%;
+  }
+  &:after {
+    border-width: $base-font-size / 2;
+    margin-left: -($base-font-size / 2);    
+  }
+  &:before {
+    border-width: $base-font-size / 2;
+    margin-left: -($base-font-size / 2);
+  }
+}
+input.validation-failed,
+textarea.validation-failed {
+  border: 1px solid $alert-color;
+}
+
+

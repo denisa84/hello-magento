@@ -1,0 +1,42 @@
+/* MESSAGES - _messages.scss */
+.messages {
+  list-style-type: none;
+  padding-left: 0;
+  ul {
+    margin: 0;
+  }
+  li {
+    @include clearfix();
+    a,
+    a:visited {
+      text-decoration: underline;
+      color: $white;      
+    }
+    a:active,
+    a:hover,
+    a:focus {
+      text-decoration: none;
+    }
+  }
+  .note-msg,
+  li li {
+    list-style-type: none;
+    color: $white;
+    @include panel();
+    @include border-radius($global-radius);
+    &:before {
+      display: none;
+    }
+  }
+  li {
+    &.success-msg li {
+      background: $success-color;
+    }
+    &.error-msg li {
+      background: $alert-color;
+    }
+    &.notice-msg li {
+      background: $gray;
+    }
+  }
+}

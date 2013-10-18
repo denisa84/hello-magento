@@ -1,0 +1,12 @@
+// Polar/default. We need to import a bit more here than in a child theme (which only needs _settings.scss).
+
+// Include all of the foundation global elements that are needed to work with any of the other files.
+@import "settings"; // All Polar settings
+
+@import "foundation-components"; // All Foundation components
+@import "components"; // All Polar components
+
+
+
+
+

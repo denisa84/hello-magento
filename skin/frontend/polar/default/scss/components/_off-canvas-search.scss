@@ -1,0 +1,17 @@
+/* OFF CANVAS SEARCH - _off-canvas-search.scss */
+#search_mini_form_mobile {
+  position: relative;
+  width: 100%;
+  padding: $base-font-size / 2;
+  margin: 0;
+  input {
+    margin: 0;
+  }
+  button {
+    position: absolute;
+    right: $base-font-size / 2;
+    top: 0.5em;
+    margin: 0;
+  }
+}
+
