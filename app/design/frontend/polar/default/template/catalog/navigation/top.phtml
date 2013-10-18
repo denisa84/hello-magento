@@ -1,0 +1,50 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Top menu for store
+ *
+ * @see Mage_Page_Block_Html_Topmenu
+ *
+ * DEPRECATED as of CE 1.7 and EE 1.12. Kept here to keep Polarthemes backward compatible.
+ *
+ * The new location is (..)/page/html/topmenu.phtml. This is a copy of topmenu.phtml, except the first line of code.
+ *
+ */
+?>
+<?php $_menu = $this->renderCategoriesMenuHtml(0,'level-top') // This line is different from top.phtml ?>
+<?php if($this->getLayout()->createBlock('cms/block')->setBlockId('polar-main-menu')->toHtml()): ?>
+  <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('polar-main-menu')->toHtml(); ?>
+<?php else: ?>
+  <?php if($_menu): ?>
+    <div class="nav-container desktop tablet">
+        <ul id="nav">
+            <?php echo $_menu ?>
+        </ul>
+    </div>
+  <?php endif ?>
+<?php endif; ?>

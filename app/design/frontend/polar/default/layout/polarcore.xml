@@ -1,0 +1,318 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+
+        <reference name="root">
+
+          <!-- Off canvas blocks, left and right -->  
+          <block type="page/html_header" name="off_canvas_left" as="off_canvas_left" template="page/html/off-canvas-left.phtml">
+            
+            <block type="core/template" name="top.search.mobile" as="topSearch-mobile" template="catalogsearch/form.mini-mobile.phtml">
+                <action method="setIdTag"><value>mobile</value></action>
+            </block>
+
+            <block type="page/html_topmenu" name="catalog.topnav.mobile" as="topMenu-mobile" template="page/html/topmenu-mobile.phtml"/>                
+
+          </block>
+
+          <block type="page/html_header" name="off_canvas_right" as="off_canvas_right" template="page/html/off-canvas-right.phtml">
+            
+            <!-- TODO: Insert account links and login form here -->
+          
+          </block>
+
+        </reference>
+
+        <reference name="head">
+            <!-- Add jQuery. It's called further down in this file. -->
+            <action method="addItem"><type>skin_js</type><name>foundation/js/vendor/jquery.js</name><params/></action>
+
+            <!-- Set jQuery in noConflict() mode. -->
+            <action method="addItem"><type>skin_js</type><name>js/jquery.noconflict.js</name><params/></action>
+
+            <!-- Load Foundation.js to be able to use all the Foundation glory -->
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.js</name><params/></action>
+
+            <!-- We need Modernizr -->
+            <action method="addItem"><type>skin_js</type><name>foundation/js/vendor/custom.modernizr.js</name><params/></action>
+
+            <!-- Foundation JS plugins. Add what you need to your local.xml. Belongs in <reference name="head">. Remember to include the CSS components associated with the plugin. -->
+            
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.section.js</name><params/></action> <!-- For tabs on product page -->
+
+            <!-- <action method="addItem"><type>skin_js</type><name>foundation/js/vendor/zepto.js</name><params/></action>
+            
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.alerts.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.clearing.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.cookie.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.dropdown.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.forms.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.joyride.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.magellan.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.orbit.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.placeholder.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.reveal.js</name><params/></action>
+            
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.tooltips.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/foundation.topbar.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>foundation/js/foundation/index.js</name><params/></action>
+            
+            -->
+            <!-- Off canvas JS and CSS. Courtesy Aiden Zeally: http://www.aidanzealley.com/offcanvas/ -->
+            <!-- <action method="addItem"><type>skin_js</type><name>js/hammer.js</name><params/></action> For drag events and similar on touch devices -->
+            <!-- <action method="addItem"><type>skin_js</type><name>js/jquery.hammer.js</name><params/></action> -->
+            <action method="addItem"><type>skin_js</type><name>js/overthrow.js</name><params/></action>
+            <action method="addItem"><type>skin_js</type><name>js/jquery.offcanvas.js</name><params/></action>
+
+
+            <!-- Our own JS, contains basically the show/hide function used on mobile and JS required for the dropdown cart to work. -->
+            <action method="addItem"><type>skin_js</type><name>js/polar.js</name><params/></action>
+            
+            <!-- Loaded separatly to speed things up slightly -->
+            <action method="addItem"><type>skin_css</type><name>fonts/fonts.css</name><params/></action> 
+
+            <!-- For small custom changes, edit custom.css -->
+            <action method="addCss"><stylesheet>css/custom.css</stylesheet></action>
+
+        </reference>
+
+        <reference name="after_body_start">
+
+          <!-- Load Foundation jQuery when the DOM is done loading. -->
+          <block type="core/text" name="foundation_load"><action method="setText"><text><![CDATA[
+            <script type="text/javascript">
+                jQuery(document).ready(function(){
+                    jQuery(document).foundation(function (response) {
+                        console.log(response.errors);
+                    });
+                });
+                
+                // Load javascript for product tabs (Section)
+                jQuery(document).foundation('section', function (response) {
+                    console.log(response.errors);
+                  });
+
+                // Load Off.canvas
+                jQuery(document).ready(function($) {
+                  $('html').offcanvas({
+                    enableTouch: false,
+                    enableKeys: false
+                  });
+                });                  
+            </script>
+          ]]></text></action></block> 
+        </reference>   
+
+        <reference name="header">
+
+            <!-- Adds a cart to the header and removes the link in customer center links: -->
+            <block type="checkout/cart_sidebar" name="cart_header" template="checkout/cart/sidebar.phtml"/> <!-- sidebar.phtml to keep it compatible with modules (not header.phtml which would be more semantic) -->
+            <block type="checkout/cart_sidebar" name="cart_header-mobile" template="checkout/cart/sidebar-mobile.phtml"/> <!-- different placement and other markup on mobile -->
+
+            <remove name="checkout_cart_link" />
+            
+        </reference>
+
+        <reference name="right">
+            
+            <!-- Get out of here, callout, you're drunk. -->
+            <remove name="right.permanent.callout" />
+
+            <remove name="cart_sidebar" />
+
+            <!-- «Poll as a core future is a good idea» - Said Nobody, Ever -->
+            <remove name="right.poll" />
+
+            <remove name="paypal.partner.right.logo" />
+
+        </reference>
+
+        <reference name="left">
+            
+            <!-- Get out of here, callout, you're drunk. -->
+            <remove name="left.permanent.callout" />
+
+            <!-- We would like to use the left column for product specific actions such as filtering, so we remove the newsletter -->
+            <remove name="left.newsletter" />
+
+            <!--
+                Adds a vertical navigation to the left column.
+                Move this to <reference name="right"> to add it to the right sidebar. Comment out to remove.
+            -->
+            <block type="catalog/navigation" name="catalog.polar.vertnav" after="currency" template="catalog/navigation/vertnav.phtml"/>
+
+        </reference>
+
+        <reference name="footer">
+            
+            <!-- Add Newsletter to footer. We usually hardcode the newsletter to the polar-footer static block, but here it's added by xml -->
+            <block type="newsletter/subscribe" name="footer.newsletter" before="-" template="newsletter/subscribe.phtml" />
+
+        </reference>
+       
+        <reference name="top.links">
+            <action method="setTemplate"><template>page/html/top-links.phtml</template></action>
+        </reference>
+
+
+
+    </default>
+
+    <!-- Let's get those customer account links under control! Here we unset the entire menu, and then add the links we would like to keep. All those disabled are commented out. Add them to your local.xml -->
+    <customer_account>
+        <remove name="catalog.polar.vertnav" />
+        <remove name="catalog.compare.sidebar" />
+        <action method="unsetChild"><name>customer_account_navigation</name></action>
+        <block type="customer/account_navigation" name="customer_account_navigation" before="-" template="customer/account/navigation.phtml">
+            <action method="addLink" translate="label" module="customer"><name>account</name><path>customer/account/</path><label>Account Dashboard</label></action>
+            <action method="addLink" translate="label" module="customer"><name>account_edit</name><path>customer/account/edit/</path><label>Account Information</label></action>
+            <action method="addLink" translate="label" module="customer"><name>address_book</name><path>customer/address/</path><label>Address Book</label></action>
+            <action method="addLink" translate="label" module="customer"><name>my_orders</name><path>sales/order/history/</path><label>My Orders</label></action>
+            <!-- <action method="addLink" translate="label" module="customer"><name>billing_agreement</name><path>sales/billing_agreement/</path><label>Billing Agreement</label></action> -->
+            <!-- <action method="addLink" translate="label" module="customer"><name>recurring_profile</name><path>sales/recurring_profile/</path><label>Recurring Profiles</label></action> -->
+            <!-- <action method="addLink" translate="label" module="customer"><name>review_customer</name><path>review/customer/</path><label>My Product Reviews</label></action> -->
+            <!-- <action method="addLink" translate="label" module="customer"><name>tag_customer</name><path>tag/customer/</path><label>My Tags</label></action> -->
+            <action method="addLink" translate="label" module="customer"><name>my_wishlist</name><path>wishlist/</path><label>My Wishlist</label></action>
+            <!-- <action method="addLink" translate="label" module="customer"><name>my_applications</name><path>oauth/customer_token/</path><label>My Applications</label></action> -->
+            <action method="addLink" translate="label" module="customer"><name>newsletter_subscriptions</name><path>newsletter/manage/</path><label>Newsletter Subscriptions</label></action>
+            <!-- <action method="addLink" translate="label" module="customer"><name>my_downloadable_products</name><path>downloadable/customer/products/</path><label>My Downloadable Products</label></action> -->
+        </block>
+    </customer_account>
+
+    <gomage_checkout_onepage_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column-checkout.phtml</template></action>
+        </reference>
+    </gomage_checkout_onepage_index>
+
+    <checkout_onepage_index>
+        <reference name="root">
+            
+            <!-- Custom checkout template that encloses the checkout page. See http://docs.trollweb.no/display/polarthemes/Checkout for more information -->
+            <action method="setTemplate"><template>page/1column-checkout.phtml</template></action>
+
+        </reference>
+    </checkout_onepage_index>
+
+    <checkout_onepage_success>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+    </checkout_onepage_success>
+
+    <contacts_index_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+    </contacts_index_index>
+
+    <catalog_product_view>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>           
+        </reference>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/highslide-full.js</name></action>
+            <action method="addCss"><stylesheet>css/highslide.css</stylesheet></action>
+        </reference>
+        <reference name="content">
+
+          <!-- Nobody has ever requested the ability to tag. -->
+          <remove name="product_tag_list" />
+
+        </reference>
+        <reference name="product.info">
+
+          <!-- Add the review form to the product page directly. -->
+          <block type="review/product_view_list" name="product.info.product_review" as="product_review" template="review/product/view/list.phtml">
+              <block type="review/form" name="product.review.form" as="review_form"/>
+          </block>
+
+          <!-- Let's add tabs to the product page instead of listing them vertically. Borrowed from Magento Modern theme, but tabs are created with Foundation 4 Section: http://foundation.zurb.com/docs/components/section.html -->
+          <block type="catalog/product_view_tabs" name="product.info.tabs" as="info_tabs" template="catalog/product/view/tabs.phtml">
+            <action method="addTab" translate="title" module="catalog">
+              <alias>details</alias>
+              <title>Details</title>
+              <block>catalog/product_view_description</block>
+              <template>catalog/product/view/description.phtml</template>
+            </action>
+            <action method="addTab" translate="title" module="catalog">
+              <alias>additional</alias>
+              <title>Additional Information</title>
+              <block>catalog/product_view_attributes</block>
+              <template>catalog/product/view/attributes.phtml</template>
+            </action>
+
+            <block type="review/form" name="product.review.form" as="review_form"/>
+            <action method="addTab" translate="title" module="review">
+              <alias>reviews</alias>
+              <title>Reviews</title>
+              <block>review/product_view_list</block>
+              <template>review/product/view/list.phtml</template>
+            </action>            
+          </block>  
+
+          <!-- Set number of columns in the related products block -->
+          <block type="catalog/product_list_related" name="catalog.product.related" as="related" template="catalog/product/list/related.phtml">
+            <action method="setColumnCount"><columns>3</columns></action>
+          </block>
+        </reference>
+    </catalog_product_view>
+    
+    <customer_logged_out>
+        <reference name="top.links">        
+            <action method="removeLinkByUrl"><url helper="customer/getLoginUrl"/></action>
+        </reference>
+    </customer_logged_out>
+
+    <!-- Let's give all product listing pages 2-columns-left to eliminate the expensive third, right column -->
+    <catalog_category_default>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="product_list">
+            <action method="setColumnCount"><columns>4</columns></action>
+        </reference>
+    </catalog_category_default>
+    <catalog_category_layered>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="product_list">
+            <action method="setColumnCount"><columns>4</columns></action>
+        </reference>
+    </catalog_category_layered>
+    <catalogsearch_result_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="search_result_list">
+            <action method="setColumnCount"><columns>4</columns></action>
+        </reference>
+    </catalogsearch_result_index>
+    <catalogsearch_advanced_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="search_result_list">
+            <action method="setColumnCount"><columns>4</columns></action>
+        </reference>
+    </catalogsearch_advanced_index>
+    <catalogsearch_advanced_result>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="search_result_list">
+            <action method="setColumnCount"><columns>4</columns></action>
+        </reference>
+    </catalogsearch_advanced_result>
+    <!-- Even though we have removed tags, it's nice to be prepared if somebody activates it -->
+    <tag_product_list>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="search_result_list">
+            <action method="setColumnCount"><columns>4</columns></action>
+        </reference>
+    </tag_product_list>
+
+</layout>

@@ -1,0 +1,21 @@
+<?php 
+
+/* Shows a vertical navigation with the same functions as the horisontal navigation */
+$_menu = $this->renderCategoriesMenuHtml(0,'level-top');
+
+?>
+
+<?php if($_menu): ?>
+<div class="block vertnav">
+	<div class="block-title">
+		<strong>
+			<span><?php echo $this->__('Categories'); ?></span>
+		</strong>
+	</div>
+	<div class="vertnav-container block-content">
+	    <ul id="vertnav">
+	        <?php echo $_menu ?>
+	    </ul>
+	</div>
+</div>
+<?php endif ?>

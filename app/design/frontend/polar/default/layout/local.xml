@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+
+	<!--
+
+  Create a local.xml in every theme to make local.xml-changes. Every default Polar-change, like loading required css-files, removing commonly unused items, etc. happens in polarcore.xml.
+
+  Polarcore.xml should only be present in polar/default
+
+  -->
+
+  <default>
+    <reference name="head">
+    </reference>
+  </default>
+
+</layout>

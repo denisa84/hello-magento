@@ -1,0 +1,11 @@
+<!-- This file isn't loaded, and only serves as XML notes for Enterprise themes -->
+    <customer_logged_out>
+        <reference name="top.links">
+            <action method="addLink" translate="label title" module="customer"><label>Log In</label><url helper="customer/getLoginUrl"/><title>Log In</title><prepare/><urlParams/><position>1</position></action>
+        </reference>
+    </customer_logged_out>
+    <customer_logged_in>
+        <reference name="top.links">
+            <action method="addLink" translate="label title" module="customer"><label>Log Out</label><url helper="customer/getLogoutUrl"/><title>Log Out</title><prepare/><urlParams/><position>2</position></action>
+        </reference>
+    </customer_logged_in>
