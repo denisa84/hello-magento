@@ -172,6 +172,37 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
 
     function baseSetup(){
 
+               //Tagging:
+        $oTag = Mage::getModel('tag/tag')
+            ->load('test', 'name');  //Test = tag name.
+
+
+        //print_r(get_class_methods($oTag));
+        //exit;
+
+        $oTagRel = Mage::getModel('tag/tag_relation');
+
+        //print_r(get_class_methods($oTagRel));
+
+        $storeId = Mage::app()->getStore()->getId();
+
+        print_r($storeId);
+        //exit;
+
+
+        $newTagRalationModel = Mage::getModel('tag/tag_relation')
+            ->setTagId($oTag->getId())
+            ->setCustomerId(Mage::getSingleton('customer/session')->getCustomerId())
+            ->setStoreId($storeId)
+            ->setActive(1)
+            ->setProductId(10)
+            ->save();
+
+        echo "here we go .. tag save!";
+
+        exit;
+
+
         //Duplicate Magentos Default for Later
         if(!$this->existsAttributeSet('MageDefault')){
             $this->createAttributeSet('MageDefault', 'Default' );
@@ -335,8 +366,9 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
 
         //Tagging:
         $oTag = Mage::getModel('tag/tag')
-            ->load('test', 'name');
+            ->load('test', 'name');  //Test = tag name.
 
+        echo "here we go .. tag save!";
         print_r($oTag);
         print_r(get_class($oTag));
 
