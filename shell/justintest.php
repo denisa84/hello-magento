@@ -170,19 +170,25 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         return $attributeSetId;
     }
 
+    function getTag($tag){
+
+    }
+
     function baseSetup(){
 
-               //Tagging:
+
+
+        //Tagging:
+        //Mage::getModel('tag/tag')
+        //            ->setName('newtag')
+        //            ->save();
+
+
         $oTag = Mage::getModel('tag/tag')
-            ->load('test', 'name');  //Test = tag name.
+            ->load('newtag', 'name');  //Test = tag name.
 
 
-        //print_r(get_class_methods($oTag));
-        //exit;
-
-        $oTagRel = Mage::getModel('tag/tag_relation');
-
-        //print_r(get_class_methods($oTagRel));
+        $oTag->setApproved(1)->save();
 
         $storeId = Mage::app()->getStore()->getId();
 
