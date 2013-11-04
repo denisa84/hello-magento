@@ -305,7 +305,7 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
 
         $file = fopen('../var/import/old_catagories.csv', 'r');
         $i = 0;
-        $limit = 100;
+        $limit = 1;
         $headers = [];
         $i = 0;
 
@@ -318,33 +318,42 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
             $treeArray = explode(':',$data['treedata']);
             $categoryRow = explode(',', $treeArray[0] );
 
+            $tagFilterArray = array();
+            //foreach ($categoryRow as $index => $tag){
+         //       echo "getting tag for " . $tag . "\n";
+               $tagFilterArray[] =  $this->getTag('kwik goal')->getId();
+               // $tagFilterArray[] =  $this->getTag("6'")->getId();
 
+            //}
 
             $collection = Mage::getResourceModel('tag/product_collection')
-                ->addAttributeToSelect('entity_id');
-
-
-
-            foreach ($categoryRow as $index => $tag){
-                $collection->addTagFilter( $this->getTag( $tag )->getId() );
-            }
+                          ->addAttributeToSelect('entity_id');
+             $collection->addTagFilter(19,28);
 
             $products = $collection->getColumnValues('entity_id');
 
-            $category = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($categoryRow) );
-            $category = $category->getFirstItem();
+            print_r($products);
 
+            //print_r($categoryRow);
 
-            foreach($products as $index=>$prodId){
-                $prodCats[$prodId][] = $category->getId();
-            }
+            //$category = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($categoryRow) );
+            //$category = $category->getFirstItem()->getEntityId();
 
+            //print_r($category);
 
+            //$category = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($categoryRow) );
+            //$category = $category->getFirstItem();
 
+            //foreach($products as $index=>$prodId){
+            //    $prodCats[$prodId][] = $category->getId();
+           // }
 
-            echo "found " . sizeof($products) . " for category (" . $category->getId() . ") " . $this->getCategoryUrl($categoryRow) . "\n";
+         //   echo "found " . sizeof($products) . " for category (" . $category->getId() . ") " . $this->getCategoryUrl($categoryRow) . "\n";
+
 
             if($i++ > ($limit - 1) ){ break;}
+
+
         }
         fclose($file);
 
