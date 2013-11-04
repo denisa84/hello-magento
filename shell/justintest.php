@@ -88,19 +88,11 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
 
             echo "Hello " . $this->getArg('hello') . "\n";
         }
-        elseif( $this->getArg('test')) {
+        elseif( $this->getArg('reload-data')) {
 
-            echo "Now we are testing!" . "\n";
-
-            $SKU = 'EVONET';
-            $product = Mage::getModel('catalog/product')->loadByAttribute('sku',$SKU);
-
-            print_r($product);
-
-            $product->setName('New Scripted Product Name');
-            $product->save();
-
-            echo "Finished testing run" . "\n";
+            echo "Bringing the DB back..\n";
+            $variable = exec('mysql -h d91d0b8164b35f211c3484a2b3194088f1b10454.rackspaceclouddb.com -u magento -pmagentogo magento_dev2 < /home/magento_fresh_ce1_8.sql');
+            echo "It is now back.. Thank you for playing. \n";
 
         } elseif( $this->getArg('delete-product-batch') ){
 
@@ -129,19 +121,26 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
             $this->baseSetup();
 
             $file = fopen('../var/import/openyard_export_3.csv', 'r');
-            $i = 1;
+            $i = 0;
+            $limit = $this->getArg('import');
             $headers = [];
             while (($line = fgetcsv($file)) !== FALSE) {
-                if ( $i == 1 ) { $headers = $line; }
+                if ( $i == 0 ) { $headers = $line; }
                 $data = array_combine($headers,$line);
 
-                if($i > 1){
+                if($i > 0){
                 $this->saveProduct($data);
                 }
-                if ($i++ == 2) break;
+                if ($i++ == $limit) break;
 
             }
             fclose($file);
+
+
+            //Put Products in Categories
+            $this->putProductsInCategories();
+
+
             echo "done importing \n";
 
 } else {
@@ -171,42 +170,29 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
     }
 
     function getTag($tag){
+        $oTag = Mage::getModel('tag/tag')
+            ->load($tag, 'name');
 
+        if( $oTag->isObjectNew() ){
+            $oTag->setName($tag)->setStatus(1)->save();
+        }
+         return $oTag;
+    }
+
+    function tagProduct($productid, $tag){
+
+         Mage::getModel('tag/tag_relation')
+            ->setTagId( $this->getTag($tag)->getId() )
+            ->setCustomerId(Mage::getSingleton('customer/session')->getCustomerId())
+            ->setStoreId( Mage::app()->getStore()->getId() )
+            ->setActive(1)
+            ->setProductId($productid)
+            ->save();
+
+        return true;
     }
 
     function baseSetup(){
-
-
-
-        //Tagging:
-        //Mage::getModel('tag/tag')
-        //            ->setName('newtag')
-        //            ->save();
-
-
-        $oTag = Mage::getModel('tag/tag')
-            ->load('newtag', 'name');  //Test = tag name.
-
-
-        $oTag->setApproved(1)->save();
-
-        $storeId = Mage::app()->getStore()->getId();
-
-        print_r($storeId);
-        //exit;
-
-
-        $newTagRalationModel = Mage::getModel('tag/tag_relation')
-            ->setTagId($oTag->getId())
-            ->setCustomerId(Mage::getSingleton('customer/session')->getCustomerId())
-            ->setStoreId($storeId)
-            ->setActive(1)
-            ->setProductId(10)
-            ->save();
-
-        echo "here we go .. tag save!";
-
-        exit;
 
 
         //Duplicate Magentos Default for Later
@@ -259,6 +245,136 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
         // add old sku id
         $this->createAttribute('old_sku_id',-1,['frontend_input' => 'text']);
         $this->addAttributeToSet('old_sku_id','Default','Meta Information');
+
+        // Create Categories
+        $this->createCategories();
+
+    }
+
+    function createCategoryPath($aPath){
+
+        $popped = $aPath;
+        array_pop($popped);
+
+        if(sizeof($popped) == 0){
+            $cat = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('name', 'Default Category');
+            $parent = $cat->getFirstItem();
+        }else{
+            $cat = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($popped));
+            $parent = $cat->getFirstItem();
+        }
+
+        $check = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($aPath) );
+        if( $check->getSize() > 0 ){
+            return $check->getFirstItem()->getEntityId();
+        }
+
+
+        $category = new Mage_Catalog_Model_Category();
+
+        $category->setName( ucwords(end($aPath)) );
+        $category->setUrlKey( $this->getCategoryUrl($aPath));
+        $category->setIsActive(1);
+        $category->setDisplayMode('PRODUCTS');
+        $category->setIsAnchor(1);
+
+        $category->setPath( $parent->getPath() );
+
+        $category->save();
+
+        return $category->getId();
+
+
+    }
+
+    function getCategoryUrl($aPath){
+
+        foreach( $aPath as $index=>$value){
+                $newValue = strtr($value, array(
+                    '.'=>'',
+                    "'"=>'',
+                ));
+            $aPath[$index] = preg_replace('/[^\da-zA-Z ]/i', '', $newValue);
+        }
+
+        return str_replace(" ","-", implode('-', $aPath ) );
+    }
+
+    function putProductsInCategories(){
+        print_r('Putting Products In Categories' . "\n");
+
+        $file = fopen('../var/import/old_catagories.csv', 'r');
+        $i = 0;
+        $limit = 100;
+        $headers = [];
+        $i = 0;
+
+        $prodCats = array();
+
+        while (($line = fgetcsv($file)) !== FALSE) {
+            if ( $i == 0 ) { $headers = $line; $i++; continue;}
+            $data = array_combine($headers,$line);
+
+            $treeArray = explode(':',$data['treedata']);
+            $categoryRow = explode(',', $treeArray[0] );
+
+
+
+            $collection = Mage::getResourceModel('tag/product_collection')
+                ->addAttributeToSelect('entity_id');
+
+
+
+            foreach ($categoryRow as $index => $tag){
+                $collection->addTagFilter( $this->getTag( $tag )->getId() );
+            }
+
+            $products = $collection->getColumnValues('entity_id');
+
+            $category = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($categoryRow) );
+            $category = $category->getFirstItem();
+
+
+            foreach($products as $index=>$prodId){
+                $prodCats[$prodId][] = $category->getId();
+            }
+
+
+
+
+            echo "found " . sizeof($products) . " for category (" . $category->getId() . ") " . $this->getCategoryUrl($categoryRow) . "\n";
+
+            if($i++ > ($limit - 1) ){ break;}
+        }
+        fclose($file);
+
+        print_r($prodCats);
+
+    exit;
+    }
+
+    function createCategories(){
+
+        print_r('creating categories' . "\n");
+
+        $file = fopen('../var/import/old_catagories.csv', 'r');
+        $i = 0;
+        $limit = 200;
+        $headers = [];
+        $i = 0;
+        while (($line = fgetcsv($file)) !== FALSE) {
+            if ( $i == 0 ) { $headers = $line; $i++; continue;}
+            $data = array_combine($headers,$line);
+
+            $treeArray = explode(':',$data['treedata']);
+            $categoryRow = explode(',', $treeArray[0] );
+
+            $parentid = $this->createCategoryPath($categoryRow);
+            echo "Created Path .. " . $parentid . " for! " . $this->getCategoryUrl($categoryRow) . "\n";
+
+        if($i++ > ($limit - 1) ){ break;}
+        }
+        fclose($file);
 
     }
 
@@ -370,21 +486,13 @@ class Mage_Shell_Compiler extends Mage_Shell_Abstract
 
         $product->save();
 
-        //Tagging:
-        $oTag = Mage::getModel('tag/tag')
-            ->load('test', 'name');  //Test = tag name.
-
-        echo "here we go .. tag save!";
-        print_r($oTag);
-        print_r(get_class($oTag));
-
-
-        exit;
-
-
-
-
-
+        // tag the product.
+        if( $data['taglist'] != ''){
+            $tagArray = explode(',',$data['taglist']);
+            foreach($tagArray as $i=>$tag ){
+                $this->tagProduct($product->getId(),$tag);
+            }
+        }
 
 
         echo "Saved ... " . $data['skucode'] . "\n";
