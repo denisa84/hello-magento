@@ -302,11 +302,12 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
 
     function getProductsByTags(array $tags){
 
-        if(isset( $tags['oldsite'])) {
-            echo "oldsite";
-            exit;
-        }
+        $flipped = array_flip($tags);
+        unset($flipped['brand']);
+        unset($flipped['sport']);
+        unset($flipped['oldsite']);
 
+        $tags = array_flip($flipped);
 
         $baseIds = Mage::getResourceModel('tag/product_collection')
             ->addAttributeToSelect('entity_id')
@@ -383,7 +384,7 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
             echo "Saved " . sizeof($categoryArray) . " Categories to productid " . $prodid . "\n";
         }
 
-        exit;
+
     }
 
     function createCategories(){
