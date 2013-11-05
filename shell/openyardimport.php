@@ -150,6 +150,21 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
                 $this->putProductsInCategories();
             }
 
+            if($this->getArg('import-reviews')){
+
+                // Add the review
+                $_review = Mage::getModel('review/review')
+                ->setEntityPkValue(1)
+                    ->setStatusId(1) // 1 = approved.
+                    ->setTitle('Title of a Review')
+                    ->setDetail('Details of a review')
+                    ->setEntityId(1)
+                    ->setStoreId( Mage::app()->getStore()->getId() )
+                    ->setStores(array( Mage::app()->getStore()->getId() ))
+                    ->setCustomerId( Mage::getSingleton('customer/session')->getCustomerId() )
+                    ->setNickname('Jerry P')
+                    ->save();
+                }
 
 
             echo "done importing \n";
@@ -190,7 +205,7 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
         foreach($imageData as $index=>$image){
             //print_r($image);
 
-            echo "Product ID: [" . $image['prodid'] . "] try this: " . 'http://www.openyard.com/pimgs/0/0/' . $image['picid'] . '/o' . $image['Microtime'] . '.jpg' . "\n";
+            //echo "Product ID: [" . $image['prodid'] . "] try this: " . 'http://www.openyard.com/pimgs/0/0/' . $image['picid'] . '/o' . $image['Microtime'] . '.jpg' . "\n";
 
             $image_url = 'http://www.openyard.com/pimgs/0/0/' . $image['picid'] . '/o' . $image['Microtime'] . '.jpg';
 
@@ -240,7 +255,7 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
            if(in_array(md5($file_contents),$md5Array)){
                echo "file already exists";
            }
-           exit;
+
            $image_type = pathinfo($image_url, PATHINFO_EXTENSION); //find the image extension
            $mediaAttribute = array();
            $filename   = md5($image_url . $productid).'.'.$image_type; //give a new name, you can modify as per your requirement
@@ -507,6 +522,15 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
         fclose($file);
 
         foreach($prodCats as $prodid=>$categoryArray){
+
+            $product = Mage::getModel('catalog/product')->load($prodid);
+            $get_categories = $product->getCategoryIds();
+
+            if( sizeof($get_categories) == sizeof($categoryArray) ){
+                echo "Categories already set for productid " . $prodid . " SKIP \n";
+                continue;
+            }
+
             $product = Mage::getModel('catalog/product')->load($prodid);
             $product->setCategoryIds( $categoryArray );
             $product->save();
