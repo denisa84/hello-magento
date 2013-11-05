@@ -97,10 +97,10 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
         } elseif( $this->getArg('delete-product-batch') ){
 
             $products = Mage::getResourceModel('catalog/product_collection')
-                            ->addAttributeToFilter('batch_import_key', $this->getArg('delete-product-batch'))
-                            ->getAllIds();
+                ->addAttributeToFilter('batch_import_key', $this->getArg('delete-product-batch'))
+                ->getAllIds();
 
-        foreach ($products as $key => $productId)
+            foreach ($products as $key => $productId)
             {
                 try {
                     $product = Mage::getSingleton('catalog/product')->load($productId);
@@ -129,7 +129,7 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
                 $data = array_combine($headers,$line);
 
                 if($i > 0){
-                $this->saveProduct($data);
+                    $this->saveProduct($data);
                 }
                 if ($i++ == $limit) break;
 
@@ -143,16 +143,16 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
 
             echo "done importing \n";
 
-} else {
+        } else {
             echo $this->usageHelp();
         }
     }
 
 
-   function existsAttributeSet($name){
+    function existsAttributeSet($name){
 
-       return ($this->getAttributeSetId($name) == NULL)? false : true;
-   }
+        return ($this->getAttributeSetId($name) == NULL)? false : true;
+    }
 
     function getAttributeSetId($name){
         $entityTypeId = Mage::getModel('eav/entity')
@@ -176,12 +176,12 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
         if( $oTag->isObjectNew() ){
             $oTag->setName($tag)->setStatus(1)->save();
         }
-         return $oTag;
+        return $oTag;
     }
 
     function tagProduct($productid, $tag){
 
-         Mage::getModel('tag/tag_relation')
+        Mage::getModel('tag/tag_relation')
             ->setTagId( $this->getTag($tag)->getId() )
             ->setCustomerId(Mage::getSingleton('customer/session')->getCustomerId())
             ->setStoreId( Mage::app()->getStore()->getId() )
@@ -226,7 +226,7 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
             'is_filterable_in_search'       => '0',
             'backend_type'                  => 'varchar',
             'default_value'                 => '',
-                                                     ]);
+        ]);
 
         $this->addAttributeToSet('batch_import_key');
 
@@ -290,22 +290,54 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
     function getCategoryUrl($aPath){
 
         foreach( $aPath as $index=>$value){
-                $newValue = strtr($value, array(
-                    '.'=>'',
-                    "'"=>'',
-                ));
+            $newValue = strtr($value, array(
+                '.'=>'',
+                "'"=>'',
+            ));
             $aPath[$index] = preg_replace('/[^\da-zA-Z ]/i', '', $newValue);
         }
 
         return str_replace(" ","-", implode('-', $aPath ) );
     }
 
+    function getProductsByTags(array $tags){
+
+        if(isset( $tags['oldsite'])) {
+            echo "oldsite";
+            exit;
+        }
+
+
+        $baseIds = Mage::getResourceModel('tag/product_collection')
+            ->addAttributeToSelect('entity_id')
+            ->addTagFilter( $this->getTag( array_pop($tags) )->getId() )
+            ->getColumnValues('entity_id');
+
+        $products = $baseIds;
+
+        if(sizeof($tags) == 0) return $products;
+
+        foreach($tags as $index=>$tag){
+
+            $additionalIds = Mage::getResourceModel('tag/product_collection')
+                ->addAttributeToSelect('entity_id')
+                ->addTagFilter( $this->getTag( $tag )->getId() )
+                ->getColumnValues('entity_id');
+
+            $products = array_intersect($products,$additionalIds);
+
+        }
+
+        return $products;
+    }
+
     function putProductsInCategories(){
+
         print_r('Putting Products In Categories' . "\n");
 
         $file = fopen('../var/import/old_catagories.csv', 'r');
         $i = 0;
-        $limit = 1;
+        $limit = 200;
         $headers = [];
         $i = 0;
 
@@ -318,37 +350,24 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
             $treeArray = explode(':',$data['treedata']);
             $categoryRow = explode(',', $treeArray[0] );
 
-            $tagFilterArray = array();
-            //foreach ($categoryRow as $index => $tag){
-         //       echo "getting tag for " . $tag . "\n";
-               $tagFilterArray[] =  $this->getTag('kwik goal')->getId();
-               // $tagFilterArray[] =  $this->getTag("6'")->getId();
+            $products = $this->getProductsByTags($categoryRow);
 
-            //}
 
-            $collection = Mage::getResourceModel('tag/product_collection')
-                          ->addAttributeToSelect('entity_id');
-             $collection->addTagFilter(19,28);
+            $category = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($categoryRow) );
+            $category = $category->getFirstItem();
 
-            $products = $collection->getColumnValues('entity_id');
-
-            print_r($products);
-
-            //print_r($categoryRow);
-
-            //$category = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($categoryRow) );
-            //$category = $category->getFirstItem()->getEntityId();
+            echo "found " . sizeof($products) . " for category (" . $category->getId() . ") " . $this->getCategoryUrl($categoryRow) . "\n";
 
             //print_r($category);
 
             //$category = Mage::getResourceModel('catalog/category_collection')->addFieldToFilter('url_key', $this->getCategoryUrl($categoryRow) );
             //$category = $category->getFirstItem();
 
-            //foreach($products as $index=>$prodId){
-            //    $prodCats[$prodId][] = $category->getId();
-           // }
+            foreach($products as $index=>$prodId){
+                $prodCats[$prodId][] = $category->getId();
+            }
 
-         //   echo "found " . sizeof($products) . " for category (" . $category->getId() . ") " . $this->getCategoryUrl($categoryRow) . "\n";
+
 
 
             if($i++ > ($limit - 1) ){ break;}
@@ -357,9 +376,14 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
         }
         fclose($file);
 
-        print_r($prodCats);
+        foreach($prodCats as $prodid=>$categoryArray){
+            $product = Mage::getModel('catalog/product')->load($prodid);
+            $product->setCategoryIds( $categoryArray );
+            $product->save();
+            echo "Saved " . sizeof($categoryArray) . " Categories to productid " . $prodid . "\n";
+        }
 
-    exit;
+        exit;
     }
 
     function createCategories(){
@@ -381,7 +405,7 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
             $parentid = $this->createCategoryPath($categoryRow);
             echo "Created Path .. " . $parentid . " for! " . $this->getCategoryUrl($categoryRow) . "\n";
 
-        if($i++ > ($limit - 1) ){ break;}
+            if($i++ > ($limit - 1) ){ break;}
         }
         fclose($file);
 
@@ -531,24 +555,24 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
 
     //Delete any option from manufacturer like 'adidas'
     function removeOptionFromAttribute($attribute,$label){
-$attribute_code=Mage::getModel('eav/entity_attribute')->getIdByCode('catalog_product', $attribute);
-$attributeInfo = Mage::getModel('eav/entity_attribute')->load($attribute_code);
-$attribute_table = Mage::getModel('eav/entity_attribute_source_table')->setAttribute($attributeInfo);
-$options = $attribute_table->getAllOptions(false);
+        $attribute_code=Mage::getModel('eav/entity_attribute')->getIdByCode('catalog_product', $attribute);
+        $attributeInfo = Mage::getModel('eav/entity_attribute')->load($attribute_code);
+        $attribute_table = Mage::getModel('eav/entity_attribute_source_table')->setAttribute($attributeInfo);
+        $options = $attribute_table->getAllOptions(false);
 //$options = $attributeInfo->getSource()->getAllOptions(false);
-$_optionArr = array('value'=>array(), 'order'=>array(), 'delete'=>array());
-foreach ($options as $option){
-$_optionArr['value'][$option['value']] = array($option['label']);
-if($label == $option['label']){
-$_optionArr['delete'][$option['value']] = true;
-}
-}
+        $_optionArr = array('value'=>array(), 'order'=>array(), 'delete'=>array());
+        foreach ($options as $option){
+            $_optionArr['value'][$option['value']] = array($option['label']);
+            if($label == $option['label']){
+                $_optionArr['delete'][$option['value']] = true;
+            }
+        }
 
-    if(sizeof($_optionArr) > 0){
-        $attributeInfo->setOption($_optionArr);
-        $attributeInfo->save();
-        return true;
-    }
+        if(sizeof($_optionArr) > 0){
+            $attributeInfo->setOption($_optionArr);
+            $attributeInfo->save();
+            return true;
+        }
         return false;
     }
 
@@ -841,9 +865,9 @@ $_optionArr['delete'][$option['value']] = true;
 
         //add attribute to a set (GROUP)
         if(is_null($attribute_sortorder)){
-        $model->addAttributeToGroup($entityTypeId,$attributeSetId,$attributeGroupId['attribute_group_id'],$attributeid);
+            $model->addAttributeToGroup($entityTypeId,$attributeSetId,$attributeGroupId['attribute_group_id'],$attributeid);
         }else{
-        $model->addAttributeToGroup($entityTypeId,$attributeSetId,$attributeGroupId['attribute_group_id'],$attributeid, $attribute_sortorder);
+            $model->addAttributeToGroup($entityTypeId,$attributeSetId,$attributeGroupId['attribute_group_id'],$attributeid, $attribute_sortorder);
         }
         return true;
     }
@@ -855,18 +879,13 @@ $_optionArr['delete'][$option['value']] = true;
     public function usageHelp()
     {
         return <<<USAGE
-Usage:  php -f justintest.php -- [options]
+Usage:  php openyardimport.php -- [options]
 
-  --hello <name>                Say Hello <name>!
-  --mode <indexer>              Show Indexer(s) Index Mode
-  --mode-realtime <indexer>     Set index mode type "Update on Save"
-  --mode-manual <indexer>       Set index mode type "Manual Update"
-  --reindex <indexer>           Reindex Data
-  info                          Show allowed indexers
-  reindexall                    Reindex Data by all indexers
+  --hello <name>                Says Hello to Name
+  --import <qty>                Number of products to import
+  --reload-data                 Reloads the Database back to a previous point
+  --delete-product-batch <id>   Deletes all products with the specific batch_import_key
   help                          This help
-
-  <indexer>     Comma separated indexer codes or value "all" for all indexers
 
 USAGE;
     }
