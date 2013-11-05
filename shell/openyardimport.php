@@ -92,9 +92,16 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
 
             echo "Bringing the DB back..\n";
             $variable = exec('mysql -h d91d0b8164b35f211c3484a2b3194088f1b10454.rackspaceclouddb.com -u magento -pmagentogo magento_dev2 < /home/magento_fresh_ce1_8.sql');
+
+            if( strpos($this->getArg('reload-data'),'i') !== false ){
+            $deleteImages = exec('rm -r ../media/catalog/product/*');
+            echo "deleted images \n";
+            }
+
             echo "It is now back.. Thank you for playing. \n";
 
-        } elseif( $this->getArg('delete-product-batch') ){
+        }
+        elseif( $this->getArg('delete-product-batch') ){
 
             $products = Mage::getResourceModel('catalog/product_collection')
                 ->addAttributeToFilter('batch_import_key', $this->getArg('delete-product-batch'))
@@ -120,25 +127,29 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
 
             $this->baseSetup();
 
-            $file = fopen('../var/import/openyard_export_3.csv', 'r');
-            $i = 0;
-            $limit = $this->getArg('import');
-            $headers = [];
-            while (($line = fgetcsv($file)) !== FALSE) {
-                if ( $i == 0 ) { $headers = $line; }
-                $data = array_combine($headers,$line);
-
-                if($i > 0){
+            if($this->getArg('product-import')){
+                $productData = $this->getImportData('openyard_export_3.csv', $this->getArg('product-import') );
+                foreach($productData as $index=>$data){
                     $this->saveProduct($data);
                 }
-                if ($i++ == $limit) break;
-
             }
-            fclose($file);
 
+            if($this->getArg('product-images')){
+                $this->importProductImages($this->getArg('product-images'));
+            }
 
-            //Put Products in Categories
-            $this->putProductsInCategories();
+            if( $this->getArg('products-images-only') ) {
+                echo "stopped at product and images";
+                return;
+            }
+
+            if($this->getArg('process-categories')){
+                // Create Categories
+                $this->createCategories();
+                //Put Products in Categories
+                $this->putProductsInCategories();
+            }
+
 
 
             echo "done importing \n";
@@ -148,6 +159,127 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
         }
     }
 
+    function getImportData($file, $limit = false){
+        $file = fopen('../var/import/' . $file, 'r');
+        $i = 0;
+        $dataArray = array();
+        $headers = [];
+        while (($line = fgetcsv($file)) !== FALSE) {
+            if ( $i == 0 ) { $headers = $line; }
+            $data = array_combine($headers,$line);
+
+            if($i > 0){
+                $dataArray[] = $data;
+            }
+
+            $i++;
+
+            if(is_numeric($limit) && $i > $limit){
+                break;
+            }
+
+        }
+        fclose($file);
+        return $dataArray;
+    }
+
+    function importProductImages($importNum){
+
+        $imageData = $this->getImportData('product_images.csv', $importNum);
+
+        foreach($imageData as $index=>$image){
+            //print_r($image);
+
+            echo "Product ID: [" . $image['prodid'] . "] try this: " . 'http://www.openyard.com/pimgs/0/0/' . $image['picid'] . '/o' . $image['Microtime'] . '.jpg' . "\n";
+
+            $image_url = 'http://www.openyard.com/pimgs/0/0/' . $image['picid'] . '/o' . $image['Microtime'] . '.jpg';
+
+            $this->addProductImageFromUrl( $image['prodid'], $image_url, $image['is_main'] );
+        }
+
+
+    }
+
+   function addProductImageFromUrl($productid, $url, $is_main){
+
+       $productCollection = Mage::getModel('catalog/product')->getCollection();
+       $productCollection->addAttributeToSelect('old_product_id');
+       $productCollection->addFieldToFilter(array(
+           array('attribute'=>'old_product_id','eq'=> $productid ),
+       ));
+
+       //loadByAttribute('unit_of_measure', 4 );
+
+       $file_contents = file_get_contents(trim($url));
+       $md5_file_content = md5($file_contents);
+
+
+       foreach ($productCollection as $product)
+       {
+           $_product = Mage::getModel('catalog/product')->load($product->getId());
+           $_images = $_product->getMediaGalleryImages();
+
+           $url_image_file =
+
+           $md5Array = array();
+
+                foreach($_images as $_image){
+
+                    if(file_exists($_image->getPath())){
+                        if($md5_file_content == md5(file_get_contents($_image->getPath()))){
+                            echo "Image Already Exists for product " . $product->getId() . " -> " . $url . "\n";
+                            continue 2;
+                        }
+                    }
+               }
+
+
+
+           /** EXTERNAL IMAGE IMPORT - START **/
+           $image_url  = $url; //get external image url from csv
+           if(in_array(md5($file_contents),$md5Array)){
+               echo "file already exists";
+           }
+           exit;
+           $image_type = pathinfo($image_url, PATHINFO_EXTENSION); //find the image extension
+           $mediaAttribute = array();
+           $filename   = md5($image_url . $productid).'.'.$image_type; //give a new name, you can modify as per your requirement
+           $filepath   = Mage::getBaseDir('media') . DS . 'import'. DS . $filename; //path for temp storage folder: ./media/import/
+           file_put_contents($filepath, $file_contents); //store the image from external url to the temp storage folder
+
+
+
+           //echo "image saved? to " . $filepath . "\n";
+
+           if($is_main == '1'){
+               $mediaAttribute = array (
+                   'thumbnail',
+                   'small_image',
+                   'image'
+               );
+           }
+           /**
+            * Add image to media gallery
+            *
+            * @param string        $file              file path of image in file system
+            * @param string|array  $mediaAttribute    code of attribute with type 'media_image',
+            *                                         leave blank if image should be only in gallery
+            * @param boolean       $move              if true, it will move source file
+            * @param boolean       $exclude           mark image as disabled in product page view
+            */
+           $product->addImageToMediaGallery($filepath, $mediaAttribute, true, false);
+           /** EXTERNAL IMAGE IMPORT - END **/
+
+           $product->save();
+
+           echo "Product ->" . $product->getId() . " Added Image from " . $url . "\n";
+
+
+
+       }
+
+
+   }
 
     function existsAttributeSet($name){
 
@@ -245,9 +377,6 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
         // add old sku id
         $this->createAttribute('old_sku_id',-1,['frontend_input' => 'text']);
         $this->addAttributeToSet('old_sku_id','Default','Meta Information');
-
-        // Create Categories
-        $this->createCategories();
 
     }
 
@@ -475,6 +604,19 @@ class Mage_Shell_Openyard extends Mage_Shell_Abstract
     }
 
     function saveProduct($data){
+
+        $productCollection = Mage::getModel('catalog/product')->getCollection();
+        $productCollection->addAttributeToSelect('old_sku_id');
+        $productCollection->addFieldToFilter(array(
+            array('attribute'=>'old_sku_id','eq'=> $data['id'] ),
+        ));
+
+        if( sizeof($productCollection) == 1) {
+            echo "Previously Saved ... " . $data['skucode'] . "\n";
+            return;
+        }
+
+
 
         if(!$this->existsAttributeSet($data['attribute_set'])){
             $this->createAttributeSet($data['attribute_set'], 'Default' );
